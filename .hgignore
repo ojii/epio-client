@@ -1,0 +1,4 @@
+syntax: glob
+epio.egg-info/*
+build/*
+dist/*

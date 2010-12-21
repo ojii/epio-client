@@ -1,0 +1,6 @@
+This is the client for the ep.io service.
+
+It's pretty small and light, and uses our public API anyway,
+so we thought it was probably worth just opening it up.
+It's not the best command-dispatching code we've written, but
+it gets the job done.
