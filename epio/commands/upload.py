@@ -1,13 +1,16 @@
 import os
 import subprocess
-from epio.commands import AppNameCommand
+from epio.commands import AppNameCommand, CommandError
 
 class Command(AppNameCommand):
     help = 'Uploads the current directory as an app.'
     
     def handle_app_name(self, app, **options):
         # Make sure they have git
-        subprocess.call(["git"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            subprocess.call(["git"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except OSError:
+            raise CommandError("You must install git before you can use epio upload.")
         
         print "Uploading %s as app %s" % (os.path.abspath("."), app)
         # Make a temporary git repo, commit the current directory to it, and push
