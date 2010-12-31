@@ -9,15 +9,14 @@ class Command(AppCommand):
         client = self.get_client(options)
 
         stdin = ""
-
         # Work out the commandline and stdin we need to provide
         if command is None:
             raise CommandError("You must supply a command to run, e.g. syncdb.")
-        elif command is "syncdb":
+        elif command == "syncdb":
             cmdline = "%%(DJANGO_BASE)s/manage.py syncdb --noinput %s" % " ".join(args)
-        elif command is "migrate":
+        elif command == "migrate":
             cmdline = "%%(DJANGO_BASE)s/manage.py migrate --noinput %s" % " ".join(args)
-        elif command is "createsuperuser":
+        elif command == "createsuperuser":
             username = raw_input("Username: ")
             email = raw_input("Email: ")
             password = raw_input("Password (will be echoed): ")
