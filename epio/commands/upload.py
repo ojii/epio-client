@@ -16,7 +16,8 @@ class Command(AppNameCommand):
         # Make a temporary git repo, commit the current directory to it, and push
         if os.path.exists(".epio-git"):
             subprocess.call(["rm", "-rf", ".epio-git"])
-        env = {"GIT_DIR": ".epio-git", "GIT_WORK_TREE": "."}
+        env = dict(os.environ)
+        env.update({"GIT_DIR": ".epio-git", "GIT_WORK_TREE": "."})
         subprocess.call(
             ["git", "init"],
             env=env,
