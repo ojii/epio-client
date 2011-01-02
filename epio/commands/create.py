@@ -29,6 +29,7 @@ class Command(AppNameCommand):
         )
         if response.status == 201:
             print "Created http://%s.ep.io" % content['app']['names'][0]
+            print "Remember to create an epio.ini file!"
             try:
                 fh = open(".epio-app", "w")
                 fh.write(content['app']['names'][0])
