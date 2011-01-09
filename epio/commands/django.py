@@ -13,17 +13,17 @@ class Command(AppCommand):
         if command is None:
             raise CommandError("You must supply a command to run, e.g. syncdb.")
         elif command == "syncdb":
-            cmdline = "%%(DJANGO_BASE)s/manage.py syncdb --noinput %s" % " ".join(args)
+            cmdline = "django-admin.py syncdb --noinput %s" % " ".join(args)
         elif command == "migrate":
-            cmdline = "%%(DJANGO_BASE)s/manage.py migrate --noinput %s" % " ".join(args)
+            cmdline = "django-admin.py migrate --noinput %s" % " ".join(args)
         elif command == "createsuperuser":
             username = raw_input("Username: ")
             email = raw_input("Email: ")
             password = raw_input("Password (will be echoed): ")
             stdin = "%(username)s\n%(email)s\n%(password)s\n%(password)s\n" % locals() 
-            cmdline = "%(DJANGO_BASE)s/manage.py createsuperuser"
+            cmdline = "django-admin.py createsuperuser"
         else:
-            cmdline = "%%(DJANGO_BASE)s/manage.py %s %s" % (command, " ".join(args))
+            cmdline = "django-admin.py %s %s" % (command, " ".join(args))
 
         # Send the command request
         response, content = client.post("app/%s/run_command/" % app, {
