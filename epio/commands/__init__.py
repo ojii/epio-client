@@ -155,6 +155,7 @@ class AppCommand(AppNameCommand):
             app = content['app']['id']
         else:
             raise CommandError("Unknown error in resolving app name (%s)" % response.status)
+        self.app_name = app_name
         return self.handle_app(app, *args, **options)
 
     def handle_app(self, app, **options):

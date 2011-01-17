@@ -130,11 +130,14 @@ class EpioClient(object):
             headers = headers,
             body = data and urlencode(data) or "",
         )
-        try:
-            content = json.loads(content)
-        except ValueError:
-            print "Error: non-JSON response"
-            sys.exit(1)
+        if content:
+            try:
+                content = json.loads(content)
+            except ValueError:
+                print "Error: non-JSON response. This is probably a problem with the ep.io service."
+                sys.exit(1)
+        else:
+            content = None
         # Reauthenticate
         # FIXME: Make the logic here more sane.
         if response.status == 401:
