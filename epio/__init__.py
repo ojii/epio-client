@@ -112,7 +112,7 @@ class CommandLineClient(object):
         """
         try:
             klass = load_command_class(subcommand)
-        except KeyError:
+        except (KeyError, ImportError):
             sys.stderr.write("Unknown command: %r\nType '%s help' for usage.\n" % \
                 (subcommand, self.prog_name))
             sys.exit(1)
