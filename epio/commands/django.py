@@ -1,4 +1,5 @@
 import sys
+import getpass
 from epio.commands import AppCommand, CommandError
 
 class Command(AppCommand):
@@ -19,7 +20,7 @@ class Command(AppCommand):
         elif command == "createsuperuser":
             username = raw_input("Username: ")
             email = raw_input("Email: ")
-            password = raw_input("Password (will be echoed): ")
+            password = getpass.getpass("Password: ")
             stdin = "%(username)s\n%(email)s\n%(password)s\n%(password)s\n" % locals() 
             cmdline = "django-admin.py createsuperuser"
         else:
