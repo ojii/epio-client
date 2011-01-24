@@ -18,24 +18,24 @@ class Command(AppNameCommand):
             subprocess.call(["rm", "-rf", ".epio-git"])
         env = dict(os.environ)
         env.update({"GIT_DIR": ".epio-git", "GIT_WORK_TREE": "."})
-        subprocess.call(
+        subprocess.Popen(
             ["git", "init"],
             env=env,
             stdout=subprocess.PIPE,
-        )
+        ).communicate()
         fh = open(".epio-git/info/exclude", "w")
         fh.write(".git\n.hg\n.svn\n.epio-git")
         fh.close()
-        subprocess.call(
+        subprocess.Popen(
             ["git", "add", "."],
             env=env,
             stdout=subprocess.PIPE,
-        )
-        subprocess.call(
+        ).communicate()
+        subprocess.Popen(
             ["git", "commit", "-a", "-m", "Auto-commit."],
             env=env,
             stdout=subprocess.PIPE,
-        )
+        ).communicate()
         subprocess.call(
             ["git", "push", "vcs@%s:%s" % (
                 os.environ.get('EPIO_HOST', 'upload.ep.io'),
