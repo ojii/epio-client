@@ -23,18 +23,22 @@ class EpioClient(object):
     """
     A client for the ep.io API.
     """
-    def __init__(self, token_file=None, email=None, password=None):
-        self.token_file = token_file
+    def __init__(self, token_file, email=None, password=None):
+        self._token_file = token_file
         self.email = email
         self.password = password
         self.http_client = httplib2.Http()
         self.access_token = None
-        if self.token_file is not None:
-            self.token_file = os.path.expanduser(token_file) + "_" + sha(self.get_host()).hexdigest()[:8]
-            try:
-                self.access_token = self.read_token_file()
-            except (IOError, KeyError):
-                self.authenticate_from_stdin()
+        try:
+            self.access_token = self.read_token_file()
+        except (IOError, KeyError):
+            self.authenticate_from_stdin()
+
+    @property
+    def token_file(self):
+        return os.path.expanduser(self._token_file) + "_" + sha(
+            self.get_host() + "||" + (self.email or "no-email")
+        ).hexdigest()[:8]
     
     def read_token_file(self):
         """
