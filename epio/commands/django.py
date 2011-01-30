@@ -1,42 +1,20 @@
 import sys
 import getpass
-from epio.commands import AppCommand, CommandError
+from epio.commands import AppNameCommand, CommandError
+from epio.commands.run_command import Command as RunCommand
 
-class Command(AppCommand):
+class Command(AppNameCommand):
     help = 'Run various Django commands.\n\nAvailable commands: syncdb, migrate, createsuperuser,' \
            'loaddata, dumpdata'
 
-    def handle_app(self, app, command=None, *args, **options):
-        client = self.get_client(options)
+    def handle_app_name(self, app_name, command=None, *args, **options):
 
-        stdin = ""
         # Work out the commandline and stdin we need to provide
         if command is None:
             raise CommandError("You must supply a command to run, e.g. syncdb.")
-        elif command == "syncdb":
-            cmdline = "django-admin.py syncdb --noinput %s" % " ".join(args)
-        elif command == "migrate":
-            cmdline = "django-admin.py migrate --noinput %s" % " ".join(args)
-        elif command == "createsuperuser":
-            username = raw_input("Username: ")
-            email = raw_input("Email: ")
-            password = getpass.getpass("Password: ")
-            stdin = "%(username)s\n%(email)s\n%(password)s\n%(password)s\n" % locals() 
-            cmdline = "django-admin.py createsuperuser"
-        else:
-            cmdline = "django-admin.py %s %s" % (command, " ".join(args))
+        args = ["django-admin.py", command] + list(args)
 
-        # Send the command request
-        response, content = client.post("app/%s/run_command/" % app, {
-            "cmdline": cmdline,
-            "stdin": stdin,
-        })
-
-        # What came back?
-        if response.status in (200, ):
-            print content['output']
-            sys.exit(content['returncode'])
-        else:
-            raise CommandError("Unknown error, %s: %s" % (response.status, content))
+        # Dispatch that to the run_command module
+        RunCommand().handle_app_name(app_name, *args)
 
 

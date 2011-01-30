@@ -1,24 +1,15 @@
-import sys
-import pipes
-from epio.commands import AppCommand, CommandError
+import os
+from epio.commands import AppNameCommand
 
-class Command(AppCommand):
+class Command(AppNameCommand):
     help = 'Run an arbitary command.'
 
-    def handle_app(self, app, *args, **options):
-        client = self.get_client(options)
-
-        # Send the command request
-        response, content = client.post("app/%s/run_command/" % app, {
-            "cmdline": " ".join(map(pipes.quote, args)),
-            "stdin": "",
-        })
-
-        # What came back?
-        if response.status in (200, ):
-            print content['output']
-            sys.exit(content['returncode'])
-        else:
-            raise CommandError("Unknown error, %s: %s" % (response.status, content))
-
-
+    def handle_app_name(self, app_name, *args, **options):
+        # We just use SSH.
+        os.execvp("ssh", [
+            "ssh",
+            "-t",
+            "vcs@%s" % os.environ.get('EPIO_HOST', 'upload.ep.io').split(":")[0],
+            "epio_command",
+            app_name,
+        ] + list(args))
