@@ -29,7 +29,14 @@ class Command(AppNameCommand):
         )
         if response.status == 201:
             print "Created http://%s.ep.io" % content['app']['names'][0]
-            print "Remember to create an epio.ini file!"
+            # Try to add a skeleton epio.ini file
+            if not os.path.exists("epio.ini"):
+                fh = open("epio.ini", "w")
+                fh.write(open(os.path.join(os.path.dirname(__file__), "..", "skeleton", "epio.ini")).read())
+                fh.close()
+                print "We've added a skeleton epio.ini file; please edit it to suit your app."
+            else:
+                print "You already seem to have an epio.ini file, so we're not going to add one."
             try:
                 fh = open(".epio-app", "w")
                 fh.write(content['app']['names'][0])
