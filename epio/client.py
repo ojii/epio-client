@@ -161,10 +161,16 @@ class EpioClient(object):
         """
         Returns the full URL given an API path.
         """
-        return 'http://%s/control/%s' % (
-            self.get_host(),
-            path
-        )
+        if path[0] == "/":
+            return 'http://%s%s' % (
+                self.get_host(),
+                path
+            )
+        else:
+            return 'http://%s/control/%s' % (
+                self.get_host(),
+                path
+            )
 
     def get_host(self):
         return os.environ.get('EPIO_HOST', 'www.ep.io')
