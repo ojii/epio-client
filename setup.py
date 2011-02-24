@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils import setup
-
+from setuptools import setup
 from epio import __version__
 
 setup(
@@ -16,6 +12,10 @@ setup(
     author_email='team@ep.io',
     url='http://www.ep.io/',
     packages = ['epio', 'epio.commands'],
+    package_data = {
+        'epio': ["skeleton/epio.ini"],
+    },
+    include_package_data=True,
     install_requires = ['argparse', 'httplib2', 'simplejson'],
     entry_points="""
     [console_scripts]
