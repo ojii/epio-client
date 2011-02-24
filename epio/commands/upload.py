@@ -23,19 +23,27 @@ class Command(AppNameCommand):
             env=env,
             stdout=subprocess.PIPE,
         ).communicate()
+        # Create a local ignore file
         fh = open(".epio-git/info/exclude", "w")
-        fh.write(".git\n.hg\n.svn\n.epio-git")
+        fh.write(".git\n.hg\n.svn\n.epio-git\n")
+        if os.path.isfile(".epioignore"):
+            fh2 = open(".epioignore")
+            fh.write(fh2.read())
+            fh2.close()
         fh.close()
+        # Add files into git
         subprocess.Popen(
             ["git", "add", "."],
             env=env,
             stdout=subprocess.PIPE,
         ).communicate()
+        # Commit them all
         subprocess.Popen(
             ["git", "commit", "-a", "-m", "Auto-commit."],
             env=env,
             stdout=subprocess.PIPE,
         ).communicate()
+        # Push it
         subprocess.call(
             ["git", "push", "vcs@%s:%s" % (
                 os.environ.get('EPIO_HOST', 'upload.ep.io').split(":")[0],
@@ -43,6 +51,7 @@ class Command(AppNameCommand):
             ), "master"],
             env=env,
         )
+        # Remove the old repo
         subprocess.call(["rm", "-rf", ".epio-git"])
 
 
