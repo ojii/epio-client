@@ -10,6 +10,7 @@ try:
 except ImportError:
     import simplejson as json
 import httplib2
+import urlparse
 from urllib import urlencode
 import epio
 
@@ -27,7 +28,21 @@ class EpioClient(object):
         self._token_file = token_file
         self.email = email
         self.password = password
-        self.http_client = httplib2.Http()
+        # Make the Http instance (optionally with proxy info)
+        proxy_info = None
+        proxy_url = os.environ.get('HTTP_PROXY', os.environ.get("http_proxy", None))
+        if proxy_url:
+            scheme, netloc, path, parameters, query, fragment = urlparse.urlparse(proxy_url)
+            if scheme != "http":
+                print "Unsupported proxy url: %s" % proxy_url
+                sys.exit(1)
+            if ":" in netloc:
+                host, port = netloc.split(":", 1)
+            else:
+                host = netloc
+                port = 80
+            proxy_info = httplib2.ProxyInfo(3, host, port)
+        self.http_client = httplib2.Http(proxy_info = proxy_info)
         self.access_token = None
         try:
             self.access_token = self.read_token_file()
