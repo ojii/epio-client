@@ -31,6 +31,10 @@ class Command(AppNameCommand):
             fh.write(fh2.read())
             fh2.close()
         fh.close()
+        # Set configuration options
+        fh = open(".epio-git/config", "w")
+        fh.write("[core]\nautocrlf = false\n")
+        fh.close()
         # Add files into git
         subprocess.Popen(
             ["git", "add", "."],
