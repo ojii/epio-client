@@ -16,7 +16,7 @@ setup(
         'epio': ["skeleton/epio.ini"],
     },
     include_package_data=True,
-    install_requires = ['argparse', 'httplib2', 'simplejson'],
+    install_requires = ['httplib2', 'simplejson'],
     entry_points="""
     [console_scripts]
     epio = epio:main
