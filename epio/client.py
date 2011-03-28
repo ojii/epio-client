@@ -143,12 +143,18 @@ class EpioClient(object):
         if data is not None:
             headers['Content-type'] = 'application/x-www-form-urlencoded'
         # Send the request.
-        response, content = self.http_client.request(
-            url,
-            method,
-            headers = headers,
-            body = data and urlencode(data) or "",
-        )
+        try:
+            response, content = self.http_client.request(
+                url,
+                method,
+                headers = headers,
+                body = data and urlencode(data) or "",
+            )
+        except AttributeError:
+            print "Could not open connection to %s" % url
+            if url.startswith("https"):
+                print "You can try without using SSL by setting the environment variable EPIO_NO_HTTPS to 1."
+            sys.exit(1)
         if response.status not in (404, 302, 503, 504) and content:
             try:
                 content = json.loads(content)
@@ -176,13 +182,19 @@ class EpioClient(object):
         """
         Returns the full URL given an API path.
         """
+        if os.environ.get("EPIO_NO_HTTPS", False):
+            protocol = "http"
+        else:
+            protocol = "https"
         if path[0] == "/":
-            return 'http://%s%s' % (
+            return '%s://%s%s' % (
+                protocol,
                 self.get_host(),
                 path
             )
         else:
-            return 'http://%s/control/%s' % (
+            return '%s://%s/control/%s' % (
+                protocol,
                 self.get_host(),
                 path
             )
