@@ -19,7 +19,7 @@ class Command(AppNameCommand):
         try:
             # Copy the files across
             subprocess.Popen(
-                ["cp", "-RT", ".", repo_dir],
+                ["cp", "-R", ".", repo_dir],
                 stdout=subprocess.PIPE,
                 cwd = os.getcwd(),
             ).communicate()
