@@ -23,8 +23,15 @@ class Command(AppNameCommand):
                 stdout=subprocess.PIPE,
                 cwd = os.getcwd(),
             ).communicate()
-            # Init the git repo
+            # Remove any old git repo
             env = dict(os.environ)
+            subprocess.Popen(
+                ["rm", "-rf", ".git"],
+                env=env,
+                stdout=subprocess.PIPE,
+                cwd=repo_dir,
+            ).communicate()
+            # Init the git repo
             subprocess.Popen(
                 ["git", "init"],
                 env=env,
