@@ -4,6 +4,13 @@
 from setuptools import setup
 from epio import __version__
 
+requires = ['httplib2<=0.6.0']
+
+try:
+    import json
+except ImportError:
+    requires.append('simplejson')
+
 setup(
     name='epio',
     version=__version__,
@@ -16,7 +23,7 @@ setup(
         'epio': ["skeleton/epio.ini"],
     },
     include_package_data=True,
-    install_requires = ['httplib2<=0.6.0', 'simplejson'],
+    install_requires = requires,
     entry_points="""
     [console_scripts]
     epio = epio:main
