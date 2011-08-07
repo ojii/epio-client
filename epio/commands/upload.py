@@ -74,7 +74,7 @@ class Command(AppNameCommand):
             # Push it
             subprocess.call(
                 ["git", "push", "vcs@%s:%s" % (
-                    os.environ.get('EPIO_HOST', 'upload.ep.io').split(":")[0],
+                    os.environ.get('EPIO_UPLOAD_HOST', os.environ.get('EPIO_HOST', 'upload.ep.io')).split(":")[0],
                     app,
                 ), "master"],
                 env=env,
