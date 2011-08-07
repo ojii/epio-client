@@ -9,7 +9,7 @@ class Command(AppNameCommand):
         os.execvp("ssh", [
             "ssh",
             "-t",
-            "vcs@%s" % os.environ.get('EPIO_HOST', 'upload.ep.io').split(":")[0],
+            "vcs@%s" % os.environ.get('EPIO_UPLOAD_HOST', os.environ.get('EPIO_HOST', 'upload.ep.io')).split(":")[0],
             "epio_command",
             app_name,
         ] + list(args))
