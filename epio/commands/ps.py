@@ -12,12 +12,12 @@ class Command(AppCommand):
         response, content = client.get('app/%s/processes/' % app)
 
         if response.status == 200:
-            print "%-10s  %-20s  %s" % ("STATE", "LOCATION", "TYPE")
+            print "%-10s  %-30s  %s" % ("STATE", "LOCATION", "TYPE")
             for type, instances in content['processes'].items():
                 for host, port, state in instances:
                     if host.endswith(".ep.io"):
                         host = host[:-6]
-                    print "%-10s  %-20s  [%s]" % (
+                    print "%-10s  %-30s  [%s]" % (
                         state,
                         "%s:%s" % (host, port),
                         type,
