@@ -72,14 +72,14 @@ class Command(AppNameCommand):
                 cwd=repo_dir,
             ).communicate()
             # Push it
-            subprocess.call(
-                ["git", "push", "vcs@%s:%s" % (
+            subprocess.Popen(
+                ["git", "push", "-q", "vcs@%s:%s" % (
                     os.environ.get('EPIO_UPLOAD_HOST', os.environ.get('EPIO_HOST', 'upload.ep.io')).split(":")[0],
                     app,
                 ), "master"],
                 env=env,
                 cwd=repo_dir,
-            )
+            ).communicate()
         finally:
             # Remove the repo
             subprocess.call(["rm", "-rf", repo_dir])
