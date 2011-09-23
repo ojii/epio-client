@@ -1,6 +1,6 @@
 import os, getpass, platform
 import subprocess
-from epio.commands import AppCommand, CommandError, SSH_IDENT, SSH_CONFIG
+from epio.commands import AppCommand, CommandError
 
 SSH_IDENT = os.path.expanduser("~/.ssh/id_rsa")
 SSH_CONFIG = os.path.expanduser("~/.ssh/config")
