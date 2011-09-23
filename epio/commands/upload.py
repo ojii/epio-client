@@ -1,6 +1,7 @@
 import os
 import subprocess
 import tempfile
+import platform
 from epio.commands import AppNameCommand, CommandError
 
 class Command(AppNameCommand):
@@ -16,6 +17,8 @@ class Command(AppNameCommand):
         print "Uploading %s as app %s" % (os.path.abspath("."), app)
         # Make a temporary git repo, commit the current directory to it, and push
         repo_dir = tempfile.mkdtemp(prefix="epio-upload-")
+        if 'Windows' in platform.platform() and not os.environ.has_key('HOME'):
+            os.environ['HOME'] = os.environ['USERPROFILE'] #failsafe HOME
         try:
             # Copy the files across
             subprocess.Popen(
