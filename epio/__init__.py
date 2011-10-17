@@ -12,7 +12,7 @@ def get_commands():
 
     Returns an empty list if no commands are defined.
     """
-    command_dir = os.path.join('/'.join(__file__.split('/')[:-1]), 'commands')
+    command_dir = os.path.join(os.path.dirname(__file__), 'commands')
     try:
         return [f[:-3] for f in os.listdir(command_dir)
                 if not f.startswith('_') and f.endswith('.py')]
