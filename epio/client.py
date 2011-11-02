@@ -160,9 +160,13 @@ class EpioClient(object):
                 content = json.loads(content)
             except ValueError:
                 print "Error: non-JSON response. This is probably a problem with the ep.io service."
+                if os.environ.get("EPIO_DEBUG", False):
+                    print content
                 sys.exit(1)
         elif response.status in (503, 504):
             print "Error: ep.io appears to be down. Please try again in a short while."
+            if os.environ.get("EPIO_DEBUG", False):
+                print content
             sys.exit(1)
         else:
             content = None
