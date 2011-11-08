@@ -5,6 +5,7 @@ from epio.commands import AppCommand, CommandError
 SSH_IDENT = os.path.expanduser("~/.ssh/id_rsa")
 SSH_CONFIG = os.path.expanduser("~/.ssh/config")
 
+
 class Command(AppCommand):
     help = 'Uploads your public SSH key to ep.io (creating one in the process if required)'
 
@@ -25,7 +26,7 @@ class Command(AppCommand):
         "Makes sure windows users can use their SSH configs"
         if not 'HOME' in os.environ:
             print "You do not seem to have the HOME environment variable required by git ssh."
-            ans = prompt("Create it now? [y] ")
+            ans = raw_input("Create it now? [y] ")
             if ans in (None, '', 'y', 'yes'):
                 try:
                     import _winreg
@@ -33,14 +34,14 @@ class Command(AppCommand):
                     _winreg.SetValue(key, "HOME", _winreg.REG_SZ,
                                      os.environ.get('USERPROFILE', None) or os.path.expanduser('~'))
                     _winreg.FlushKey(key)
-                except EnvironmentError, e:
+                except EnvironmentError:
                     print "Permission Denied. Please manually set \%HOME\% to %s" % os.path.expanduser('~')
 
     def make_key(self):
         "Creates a new SSH key"
         returncode = subprocess.call(
-            ["ssh-keygen", "-t", "rsa", "-f", SSH_IDENT, "-N",
-             '-C', getpass.getuser()+"@"+platform.node(), ""],
+            ["ssh-keygen", "-t", "rsa", "-f", SSH_IDENT,
+             '-C', getpass.getuser() + "@" + platform.node(), ""],
             stdout = subprocess.PIPE,
         )
         if returncode:
@@ -58,7 +59,7 @@ class Command(AppCommand):
             epio_conf = "Host epio\n    Hostname upload.ep.io\n    User vcs\n    IdentityFile %s" % SSH_IDENT
             with open(SSH_CONFIG, 'w') as file:
                 file.write(origfile)
-                file.write(epioconf)
+                file.write(epio_conf)
 
     def handle(self, **options):
         client = self.get_client(options)
@@ -89,5 +90,3 @@ class Command(AppCommand):
                 print "Added SSH key."
         else:
             raise CommandError("Unknown error, %s: %s" % (response.status, content))
-
-
