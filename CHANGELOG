@@ -1,0 +1,92 @@
+0.2.17
+------
+
+ * Add set_app command
+
+0.2.16
+------
+
+ * Fix ssh-keygen usage on some systems
+
+0.2.15
+------
+
+ * Added debugging options for support requests
+
+0.2.14
+------
+
+ * Fixed Windows SSH support
+ * Rename ``run_command`` to ``run`` (old name still works)
+
+0.2.13
+------
+
+ * Updated ``epio ps`` command to include memory and command-line information.
+
+0.2.12
+------
+
+ * Added ``epio ps`` command.
+
+0.2.11
+------
+
+ * Fixed ``run_command`` and ``django`` to use ``EPIO_UPLOAD_HOST``.
+
+0.2.10
+------
+
+ * Added ``EPIO_UPLOAD_HOST`` environment variable to allow overriding of the upload point independent of the web endpoint.
+
+0.2.9
+-----
+
+ * Modified setup.py to only require simplejson on Python versions without a native ``json`` library.
+
+0.2.8
+-----
+
+ * Re-release to depend on working versions of httplib2
+
+0.2.7
+-----
+
+ * Fixed problems with epio upload sometimes submitting different git branches.
+
+0.2.6
+-----
+
+ * Made new upload process compatible with BSD ``cp``.
+ * Client now uses SSL to ep.io servers by default. Set the environment ``EPIO_NO_HTTPS`` to ``1`` to disable.
+
+0.2.5
+-----
+
+ * New upload process that ignores the contents of ``.gitignore`` (you can still ignore files using ``.epioignore``).
+
+0.2.4
+-----
+
+ * Fixed issues with mixed line endings and ``epio upload``.
+
+0.2.3
+-----
+
+ * Added support for HTTP proxies via the ``HTTP_PROXY`` environment variable.
+
+0.2.2
+-----
+
+ * Added support for ``.epioignore`` file.
+
+0.2.1
+-----
+
+ * Added ``upload_ssh_key`` command.
+ * ``epio create`` now also creates a skeleton ``epio.ini`` file.
+
+0.2.0
+-----
+
+ * Added support for interactive commands.
