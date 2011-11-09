@@ -4,7 +4,7 @@ import optparse
 import os
 import sys
 
-__version__ = '0.2.16'
+__version__ = '0.2.17'
 
 
 def get_commands():
