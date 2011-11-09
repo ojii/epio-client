@@ -6,6 +6,7 @@ import sys
 
 __version__ = '0.2.16'
 
+
 def get_commands():
     """
     Returns a list of all the command names that are available.
@@ -18,6 +19,7 @@ def get_commands():
                 if not f.startswith('_') and f.endswith('.py')]
     except OSError:
         return []
+
 
 def load_command_class(name):
     full_name = 'epio.commands.%s' % name
@@ -94,7 +96,7 @@ class CommandLineClient(object):
         """
         usage = [
             '',
-            "Type '%s help <subcommand>' for help on a specific subcommand." 
+            "Type '%s help <subcommand>' for help on a specific subcommand."
                 % self.prog_name,
             ''
         ]
@@ -131,12 +133,12 @@ class CommandLineClient(object):
         try:
             options, args = parser.parse_args(self.argv)
         except:
-            pass # Ignore any option errors at this point.
+            pass  # Ignore any option errors at this point.
 
         try:
             subcommand = self.argv[1]
         except IndexError:
-            subcommand = 'help' # Display help if no arguments were given.
+            subcommand = 'help'  # Display help if no arguments were given.
 
         if subcommand == 'help':
             if len(args) > 2:
@@ -154,9 +156,10 @@ class CommandLineClient(object):
         else:
             self.fetch_command(subcommand).run_from_argv(self.argv)
     
+
 def main():
     CommandLineClient(sys.argv).execute()
 
+
 if __name__ == '__main__':
     main()
-
